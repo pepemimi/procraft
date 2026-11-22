@@ -34,7 +34,9 @@ case "$ARCH" in
   *) echo "unsupported architecture $ARCH" >&2; exit 2 ;;
 esac
 BASENAME="procraft-$VERSION-linux-$ARCH"
-has() { case " $FORMATS " in *" $1 "*) return 0 ;; *) return 1 ;; esac; }
+has() {
+  case " $FORMATS " in *" $1 "*) return 0 ;; *) return 1 ;; esac
+}
 echo "==> ProCraft $VERSION for Linux $ARCH ($FORMATS)"
 
 if [ "$SKIP_BUILD" = 0 ]; then

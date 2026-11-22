@@ -1,0 +1,67 @@
+# Maintainer: ArtCraft Team <bearincrypto@gmail.com>
+pkgname=procraft-git
+pkgver=0
+pkgrel=1
+pkgdesc="Paint, draw and sketch (git version)"
+arch=('x86_64' 'aarch64')
+url="https://github.com/artcraft-android/procraft"
+license=('MIT' 'Apache-2.0')
+provides=('procraft')
+conflicts=('procraft')
+depends=(
+  gcc-libs
+  glibc
+  libx11
+  libxcb
+  libxcursor
+  libxi
+  libxkbcommon
+  libxkbcommon-x11
+  vulkan-icd-loader
+  wayland
+)
+makedepends=('git' 'rust')
+optdepends=(
+  'mesa: Vulkan rendering'
+  'ffmpeg: video import, time-lapse and MP4 export'
+  'poppler: PDF import and export'
+  'xdg-desktop-portal: desktop integration'
+  'pipewire: system audio playback and recording'
+  'pulseaudio: system audio playback and recording'
+  'alsa-utils: system audio playback'
+)
+source=("procraft::git+${url}.git")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "procraft"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+prepare() {
+  cd "procraft"
+  cargo fetch --locked
+}
+
+build() {
+  cd "procraft"
+  cargo build --release --locked -p procraft-desktop
+}
+
+check() {
+  cd "procraft"
+  cargo test --release --locked --workspace
+}
+
+package() {
+  cd "procraft"
+  install -Dm755 "target/release/procraft" "$pkgdir/usr/bin/procraft"
+  install -Dm644 "packaging/linux/procraft.desktop" \
+    "$pkgdir/usr/share/applications/procraft.desktop"
+  cp -a "assets/app-icon/hicolor" "$pkgdir/usr/share/icons/"
+
+  install -Dm644 "LICENSE-MIT" "$pkgdir/usr/share/licenses/$pkgname/LICENSE-MIT"
+  install -Dm644 "LICENSE-APACHE" "$pkgdir/usr/share/licenses/$pkgname/LICENSE-APACHE"
+  install -Dm644 "NOTICE" "$pkgdir/usr/share/licenses/$pkgname/NOTICE"
+  install -Dm644 "ATTRIBUTION.md" "$pkgdir/usr/share/licenses/$pkgname/ATTRIBUTION.md"
+}

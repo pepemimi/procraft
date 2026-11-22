@@ -133,7 +133,7 @@ ProCraft is in beta, on Android tablets and on the desktop (Windows and Linux).
 * Clone this repository
 * Make sure you have at least 6 GB of free disk space
 * enter `android` and run `./gradlew assembleRelease -Pprocraft.abis=arm64-v8a`, or open that folder in Android Studio and press Run.
-* the desktop app: `cargo run --release -p procraft-desktop` from the repository's root; its installer and packages with `packaging/windows/package.ps1` (WiX v5) and `packaging/linux/package.sh` (nfpm, appimagetool).
+* the desktop app: `cargo run --release -p procraft-desktop` from the repository's root; its installer and packages with `packaging/windows/package.ps1` (WiX v5) and `packaging/linux/package.sh` (nfpm, appimagetool). Arch Linux users can build the unversioned AUR package `procraft-git` with `makepkg -si` from `packaging/linux`.
 
 Build time dependencies:
 
